@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DynamicWizardQuestionModel } from '@lcu-ide/dynamic-wizard-common';
 
 @Component({
   selector: 'lcu-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'demo';
+  public Answered(event: DynamicWizardQuestionModel) {
+    alert('Answered');
+  }
 }

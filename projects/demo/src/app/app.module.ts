@@ -1,18 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { FathymSharedModule, LCUServiceSettings } from '@lcu-ide/common';
+import { DynamicWizardModule } from '@lcu-ide/dynamic-wizard-common';
+
+export const settings = FathymSharedModule.DefaultServiceSettings(environment);
+
+// settings.APIRoot = 'http://www.lowcodeunit.com';
+// settings.APIRoot = 'http://www.habistack.com';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
+  imports: [FathymSharedModule.forRoot(), BrowserModule, BrowserAnimationsModule, DynamicWizardModule],
+  providers: [
+    {
+      provide: LCUServiceSettings,
+      useValue: settings
+    }
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

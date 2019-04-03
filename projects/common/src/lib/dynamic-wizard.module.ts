@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material';
+import { FathymSharedModule } from '@lcu-ide/common';
+import { DynamicWizardComponent } from './controls/dynamic-wizard/dynamic-wizard.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [DynamicWizardComponent],
   imports: [
-    CommonModule
-  ]
+    FathymSharedModule,
+    MatButtonModule
+  ],
+  exports: [DynamicWizardComponent],
+  entryComponents: [DynamicWizardComponent]
 })
 export class DynamicWizardModule { }
