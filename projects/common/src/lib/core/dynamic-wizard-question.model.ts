@@ -1,16 +1,37 @@
 export class DynamicWizardQuestionModel {
-  public Answers: string[];
-
-  public Description?: string;
+  
+  /**
+   * The question or phrase to be shown to the user to elicit an answer
+   */
+  public Phrase: string;
 
   /**
-   * Represents the input to output mapping....
+   * The input to output mapping
    */
-  public Lookup: string;
+  public Lookup?: string;
 
-  public Name?: string;
+  /**
+   * The type of answer (text/ number/ radio/ etc)
+   */
+  public Type: 'text' | 'number' | 'radio' | 'checkbox' | 'date' | 'daterange';
 
-  public Options: string[];
+  /**
+   * An optional placeholder for textual responses
+   */
+  public Placeholder?: string;
 
-  public Question: string;
+  /**
+   * Dictates whether or not a response for the particular question is required
+   */
+  public Required: boolean;
+
+  /**
+   * Response field will be added to object upon answering the wizard question
+   */
+  public Response?: any;
+
+  /**
+   * Optional set of options for radio and checkbox questions
+   */
+  public Options?: string[];
 }
