@@ -20,7 +20,7 @@ export class DynamicWizardComponent implements OnInit {
   /**
    * The stepper control for the current step
    */
-  stepper: MatStepper;
+  protected stepper: MatStepper;
 
   //  Properties
 
@@ -47,17 +47,80 @@ export class DynamicWizardComponent implements OnInit {
   }
 
   //  Life Cycle
+
   public ngOnInit() {
     this.setUpQuestions();
   }
 
   //  API Methods
 
+  /**
+   * Upon completing the wizard, this will emit an event with the array of JSON questions - user's response property attached
+   */
+  public EmitResults(): void {
+    this.AnsweredQuestions.emit(this.JSONQuestions);
+
+    // for now, just log the output
+    console.log(this.JSONQuestions);
+  }
+
+  /**
+   * 
+   * @param wizQuestion the question object to which the response property will be added
+   * @param stepper the stepper control for the current step
+   * 
+   * Adds the response property to the question object
+   */
+  public SetValue(wizQuestion: any, stepper: MatStepper): void {
+
+    this.stepper = stepper;
+    wizQuestion.FormGroup.submitted = true;
+
+    this.JSONQuestions.forEach((JSONQ) => {
+      if (JSONQ.Phrase === wizQuestion.Question) {
+        if (wizQuestion.Type === 'checkbox') {
+          JSONQ.Response = wizQuestion.FormGroup.value;
+          if (JSONQ.Required === true && !this.isBoxChecked(JSONQ.Response)) {
+            this.stepper.previous();
+          } else {
+            this.ShowCheckboxError = false;
+          }
+        } else if (wizQuestion.Type === 'daterange') {
+          JSONQ.Response = {};
+          JSONQ.Response.startDate = wizQuestion.FormGroup.controls.startDate.value;
+          JSONQ.Response.endDate = wizQuestion.FormGroup.controls.endDate.value;
+        } else {
+          JSONQ.Response = wizQuestion.FormGroup.value[wizQuestion.FormCtrl];
+        }
+      }
+    });
+  }
+
+  /**
+   * 
+   * @param option the string representing the checkbox option
+   * @param formGroup the form group to which the option belongs
+   * 
+   * Toggles the checkbox on or off
+   */
+  public ToggleCheckbox(option: string, formGroup: FormGroup): void {
+    formGroup.value[option] === '' ? formGroup.patchValue({ [option]: 'true' }) : formGroup.patchValue({ [option]: '' });
+    this.isBoxChecked(formGroup.value);
+  }
+
+  /**
+   * Public API that resets the wizard to its initial state
+   */
+  public ResetWizard(): void {
+    this.setUpQuestions();
+  }
+
   //  Helpers
+
   /**
    * Converts the Question array passed in from parent element to wizard questions that will populate the wizard
    */
-  setUpQuestions(): void {
+  protected setUpQuestions(): void {
     this.WizardQs = [];
     this.JSONQuestions.forEach((el, idx) => {
       let currentCtrl = `ctrl${idx}`;
@@ -93,55 +156,11 @@ export class DynamicWizardComponent implements OnInit {
 
   /**
    * 
-   * @param wizQuestion the question object to which the response property will be added
-   * @param stepper the stepper control for the current step
-   * 
-   * Adds the response property to the question object
-   */
-  setValue(wizQuestion: any, stepper: MatStepper): void {
-
-    this.stepper = stepper;
-    wizQuestion.FormGroup.submitted = true;
-
-    this.JSONQuestions.forEach((JSONQ) => {
-      if (JSONQ.Phrase === wizQuestion.Question) {
-        if (wizQuestion.Type === 'checkbox') {
-          JSONQ.Response = wizQuestion.FormGroup.value;
-          if (JSONQ.Required === true && !this.isBoxChecked(JSONQ.Response)) {
-            this.stepper.previous();
-          } else {
-            this.ShowCheckboxError = false;
-          }
-        } else if (wizQuestion.Type === 'daterange') {
-          JSONQ.Response = {};
-          JSONQ.Response.startDate = wizQuestion.FormGroup.controls.startDate.value;
-          JSONQ.Response.endDate = wizQuestion.FormGroup.controls.endDate.value;
-        } else {
-          JSONQ.Response = wizQuestion.FormGroup.value[wizQuestion.FormCtrl];
-        }
-      }
-    });
-  }
-
-  /**
-   * 
-   * @param option the string representing the checkbox option
-   * @param formGroup the form group to which the option belongs
-   * 
-   * Toggles the checkbox on or off
-   */
-  toggleCheckbox(option: string, formGroup: FormGroup): void {
-    formGroup.value[option] === '' ? formGroup.patchValue({ [option]: 'true' }) : formGroup.patchValue({ [option]: '' });
-    this.isBoxChecked(formGroup.value);
-  }
-
-  /**
-   * 
    * @param checkboxResponseObject the object of checkbox values to validate
    * 
    * Checks object of checkbox values and returns false if no boxes are checked - otherwise returns true
    */
-  isBoxChecked(checkboxResponseObject: Object): boolean {
+  protected isBoxChecked(checkboxResponseObject: Object): boolean {
     for (let box of Object.values(checkboxResponseObject)) {
       if (box !== '') {
         this.ShowCheckboxError = false;
@@ -152,7 +171,10 @@ export class DynamicWizardComponent implements OnInit {
     return false;
   }
 
-  returnDefaults(): DynamicWizardQuestionModel[] {
+  /**
+   * Returns a default set of questions in the case that there is no input (JSONQuestions) from the parent element
+   */
+  protected returnDefaults(): DynamicWizardQuestionModel[] {
     let defaults: DynamicWizardQuestionModel[];
     defaults = [{
       Phrase: 'Text question (required)',
@@ -220,16 +242,5 @@ export class DynamicWizardComponent implements OnInit {
     }];
     return defaults;
   }
-
-  /**
-   * Upon completing the wizard, this will emit an event with the array of JSON questions - user's response property attached
-   */
-  emitResults(): void {
-    this.AnsweredQuestions.emit(this.JSONQuestions);
-
-    // for now, just log the output
-    console.log(this.JSONQuestions);
-  }
-
 
 }
