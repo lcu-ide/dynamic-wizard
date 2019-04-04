@@ -1,7 +1,92 @@
-<p>
-  dynamic-wizard works!
-</p>
+<mat-vertical-stepper [linear]="true" #stepper>
 
-<a mat-raised-button color="primary" (click)="SubmitAnswers()">
-  Submit
-</a>
+  <div *ngFor="let question of WizardQs">
+    <mat-step [stepControl]="question.FormGroup" [optional]="!question.Required">
+      <form [formGroup]="question.FormGroup">
+
+        <ng-template matStepLabel>{{question.Question}}</ng-template>
+
+        <!-- text or number -->
+        <mat-form-field *ngIf="question.Type === 'text' || question.Type === 'number'">
+          <input matInput type="{{question.Type}}" placeholder="{{question.Placeholder}}"
+            formControlName="{{question.FormCtrl}}" [required]="question.Required">
+          <mat-error
+            *ngIf="question.FormGroup.invalid === true && question.FormGroup.submitted === true && question.Required === true">
+            Please enter a valid value</mat-error>
+        </mat-form-field>
+
+        <!-- radio -->
+        <mat-radio-group *ngIf="question.Type === 'radio'" aria-label="Select an option"
+          formControlName="{{question.FormCtrl}}" [required]="question.Required">
+          <mat-radio-button value="{{option}}" *ngFor="let option of question.Options" (click)="setValue(question, stepper)">
+            {{option}}</mat-radio-button>
+          <mat-error style="display: block"
+            *ngIf="question.FormGroup.invalid === true && question.FormGroup.submitted === true && question.Required === true">
+            Please choose an item</mat-error>
+        </mat-radio-group>
+
+        <!-- checkbox -->
+        <div *ngIf="question.Type === 'checkbox'">
+          <mat-checkbox *ngFor="let option of question.Options" value="{{option}}"
+            (click)="toggleCheckbox(option, question.FormGroup)">{{option}}</mat-checkbox>
+          <mat-error style="display: block"
+            *ngIf="ShowCheckboxError && question.Required === true">
+            Please choose at least one item</mat-error>
+        </div>
+
+        <!-- datepicker -->
+        <mat-form-field *ngIf="question.Type === 'date'">
+          <input matInput [matDatepicker]="picker" placeholder="Choose date" formControlName="{{question.FormCtrl}}"
+            [required]="question.Required">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="question.FormGroup.invalid === true && question.FormGroup.submitted === true && question.Required === true">
+            Please choose a date</mat-error>
+        </mat-form-field>
+
+        <!-- date range -->
+        <div *ngIf="question.Type === 'daterange'" fxLayout="column">
+          <mat-form-field style="width: 30%">
+            <!--temporary inline style until style guide sorted-->
+            <input matInput [matDatepicker]="picker1" placeholder="Start date" formControlName="startDate"
+              [required]="question.Required">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error
+              *ngIf="question.FormGroup.invalid === true && question.FormGroup.submitted === true && question.Required === true">
+              Please choose a date</mat-error>
+          </mat-form-field>
+
+          <mat-form-field style="width: 30%">
+            <!--temporary inline style until style guide sorted-->
+            <input matInput [matDatepicker]="picker2" placeholder="End date" formControlName="endDate"
+              [required]="question.Required">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error
+              *ngIf="question.FormGroup.invalid === true && question.FormGroup.submitted === true && question.Required === true">
+              Please choose a date</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <button mat-button matStepperPrevious mat-raised-button>Back</button>
+          <button mat-button matStepperNext mat-raised-button color="primary" (click)="setValue(question, stepper)">Next</button>
+        </div>
+
+      </form>
+    </mat-step>
+  </div>
+
+  <mat-step>
+    <ng-template matStepLabel>Finished</ng-template>
+    <p>You can review your answers by clicking 'Back'.</p>
+    <p>Otherwise, click 'Reset' to start over or 'Submit' to move forward.</p>
+    <div>
+      <button mat-button matStepperPrevious mat-raised-button>Back</button>
+      <button mat-button (click)="stepper.reset();setUpQuestions()" mat-raised-button color="accent">Reset</button>
+      <button mat-button (click)="emitResults()" mat-raised-button color="primary">Submit</button>
+    </div>
+  </mat-step>
+</mat-vertical-stepper>
