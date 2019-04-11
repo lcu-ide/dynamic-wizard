@@ -1,0 +1,4 @@
+/* disable navigating the wizard by clicking the stepper headers: */
+::ng-deep .mat-vertical-stepper-header, ::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+}
