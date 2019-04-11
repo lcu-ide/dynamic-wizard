@@ -1,6 +1,6 @@
 {
   "name": "@lcu-ide/dynamic-wizard",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "scripts": {
     "build:all": "npm run build:common && npm run build:lcu && npm run build:demo",
     "build:common": "ng build common",
