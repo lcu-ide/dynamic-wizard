@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { DynamicWizardQuestionModel } from '../../core/models/dynamic-wizard-question.model';
-import { InternalWizardQuestionModel } from '../../core/models/internal-wizard-question.model';
+import { DynamicWizardQuestionModel } from '../../models/dynamic-wizard-question.model';
+import { InternalWizardQuestionModel } from '../../models/internal-wizard-question.model';
 import { MatStepper } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
