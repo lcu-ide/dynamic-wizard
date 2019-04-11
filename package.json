@@ -8,7 +8,7 @@
     "build:lcu": "ng build lcu --prod --single-bundle && npm run pack",
     "demo": "npm run build:common && npm run start:demo",
     "demo:lcu": "npm run build:common && npm run build:lcu && npm run start:demo",
-    "deploy": "npm version patch && npm run version:all && npm run buil:all && npm run deploy:all",
+    "deploy": "npm version patch && npm run version:all && npm run build:all && npm run deploy:all",
     "deploy:all": "npm run deploy:common && npm run deploy:lcu && npm run deploy:demo",
     "deploy:common": "npm publish ./dist/common --access public",
     "deploy:demo": "npm publish ./dist/demo --access public",
