@@ -13,7 +13,7 @@ export class DynamicWizardComponent implements OnInit {
   //  Fields
 
   /**
-   * Shows error if no checkbox selected for a "required" checkbox question (no native support for Reactive Form validation of Mat-Checkbox)
+   * Shows error if no checkbox selected for a "required" checkbox question (no native support for Reactive Form validation of Mat-Checkbox).
    */
   public ShowCheckboxError: boolean;
 
