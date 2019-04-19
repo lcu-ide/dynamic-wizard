@@ -27,7 +27,7 @@
 
         <!-- checkbox -->
         <div *ngIf="question.Type === 'checkbox'">
-          <mat-checkbox *ngFor="let option of question.Options" value="{{option}}"
+          <mat-checkbox class="mat-checkbox" *ngFor="let option of question.Options" value="{{option}}"
             (click)="ToggleCheckbox(option, question.FormGroup)">{{option}}</mat-checkbox>
           <mat-error style="display: block"
             *ngIf="ShowCheckboxError && question.Required === true">

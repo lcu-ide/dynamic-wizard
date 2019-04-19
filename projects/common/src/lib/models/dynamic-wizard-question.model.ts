@@ -1,5 +1,4 @@
 export class DynamicWizardQuestionModel {
-  
   /**
    * The question or phrase to be shown to the user to elicit an answer
    */

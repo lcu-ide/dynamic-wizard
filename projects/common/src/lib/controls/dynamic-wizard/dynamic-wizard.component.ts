@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { DynamicWizardQuestionModel } from '../../core/dynamic-wizard-question.model';
-import { InternalWizardQuestionModel } from '../../core/internal-wizard-question.model';
+import { DynamicWizardQuestionModel } from '../../models/dynamic-wizard-question.model';
+import { InternalWizardQuestionModel } from '../../models/internal-wizard-question.model';
 import { MatStepper } from '@angular/material';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 
@@ -13,7 +13,7 @@ export class DynamicWizardComponent implements OnInit {
   //  Fields
 
   /**
-   * Shows error if no checkbox selected for a "required" checkbox question (no native support for Reactive Form validation of Mat-Checkbox)
+   * Shows error if no checkbox selected for a "required" checkbox question (no native support for Reactive Form validation of Mat-Checkbox).
    */
   public ShowCheckboxError: boolean;
 
@@ -27,7 +27,7 @@ export class DynamicWizardComponent implements OnInit {
   /**
    * The array of Question objects passed in from parent element
    */
-  @Input('JSONQuestions') 
+  @Input('JSONQuestions')
   public JSONQuestions: DynamicWizardQuestionModel[] = this.returnDefaults();
 
   /**
@@ -65,10 +65,10 @@ export class DynamicWizardComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    * @param wizQuestion the question object to which the response property will be added
    * @param stepper the stepper control for the current step
-   * 
+   *
    * Adds the response property to the question object
    */
   public SetValue(wizQuestion: any, stepper: MatStepper): void {
@@ -97,10 +97,10 @@ export class DynamicWizardComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    * @param option the string representing the checkbox option
    * @param formGroup the form group to which the option belongs
-   * 
+   *
    * Toggles the checkbox on or off
    */
   public ToggleCheckbox(option: string, formGroup: FormGroup): void {
@@ -155,9 +155,9 @@ export class DynamicWizardComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    * @param checkboxResponseObject the object of checkbox values to validate
-   * 
+   *
    * Checks object of checkbox values and returns false if no boxes are checked - otherwise returns true
    */
   protected isBoxChecked(checkboxResponseObject: Object): boolean {

@@ -2,3 +2,11 @@
 ::ng-deep .mat-vertical-stepper-header, ::ng-deep .mat-horizontal-stepper-header {
     pointer-events: none !important;
 }
+
+mat-radio-button, .mat-checkbox {
+    display: block;
+}
+
+mat-radio-button {
+    margin-bottom: 4px;
+}
