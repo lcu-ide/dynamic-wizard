@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 
@@ -16,7 +16,7 @@ export const settings = FathymSharedModule.DefaultServiceSettings(environment);
   declarations: [
     AppComponent
   ],
-  imports: [FathymSharedModule.forRoot(), BrowserModule, BrowserAnimationsModule, DynamicWizardModule],
+  imports: [FathymSharedModule.forRoot(), BrowserAnimationsModule, DynamicWizardModule],
   providers: [
     {
       provide: LCUServiceSettings,
